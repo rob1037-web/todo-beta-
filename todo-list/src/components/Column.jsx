@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Task from '../Task/Task';
+import Task from './Task';
 
 const Column = ({ title, tasks, onDropTask, onDeleteTask }) => {
   const handleDrop = (event) => {
