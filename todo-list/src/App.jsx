@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
-import Board from './components/Board/Board';
+import Board from './components/Board';
 import AddTaskForm from './components/AddTaskForm';
 
 const initialTasks = {
