@@ -89,7 +89,7 @@ function App() {
   };
 
   const addTask = (title) => {
-    const newTaskId = task-${Date.now()};
+    const newTaskId = 'task-${Date.now()}';
     const newTask = { id: newTaskId, content: title, priority: 'low' };
     const newTasks = { ...tasks, [newTaskId]: newTask };
 
