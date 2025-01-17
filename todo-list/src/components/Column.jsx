@@ -1,7 +1,8 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Task from '../Task/Task';
 
-const Column = ({ title, tasks, onDropTask }) => {
+const Column = ({ title, tasks, onDropTask, onDeleteTask }) => {
   const handleDrop = (event) => {
     event.preventDefault();
     const taskId = event.dataTransfer.getData('taskId');
@@ -10,14 +11,16 @@ const Column = ({ title, tasks, onDropTask }) => {
 
   return (
     <div
-      className="w-1/3 p-4 bg-gray-100 rounded"
+      className="w-full sm:w-1/2 lg:w-1/3 p-4 bg-gray-100 rounded-lg shadow-md"
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     >
       <h2 className="text-xl font-bold mb-4">{title}</h2>
-      {tasks.map((task) => (
-        <Task key={task.id} task={task} />
-      ))}
+      <AnimatePresence>
+        {tasks.map((task) => (
+          <Task key={task.id} task={task} onDeleteTask={onDeleteTask} />
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

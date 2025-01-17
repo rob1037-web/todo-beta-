@@ -6,12 +6,12 @@ function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow">
+    <header className="p-4 bg-blue-500 text-white text-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo et titre */}
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900">
               Kanban Board
             </h1>
           </div>

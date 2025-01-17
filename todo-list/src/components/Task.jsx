@@ -1,37 +1,31 @@
 import React from 'react';
-import { MoreHorizontal } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-function Task({ task, provided, snapshot }) {
-  const priorityColors = {
-    high: 'bg-red-100 text-red-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    low: 'bg-green-100 text-green-800'
+const Task = ({ task, onDeleteTask }) => {
+  const handleDragStart = (event) => {
+    event.dataTransfer.setData('taskId', task.id);
   };
 
   return (
-    <div
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-      className={`bg-white rounded-lg shadow p-4 ${
-        snapshot.isDragging ? 'shadow-lg' : ''
-      }`}
+    <motion.div
+      className="p-4 mb-4 bg-white rounded shadow cursor-pointer flex justify-between items-center"
+      draggable
+      onDragStart={handleDragStart}
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      whileDrag={{ scale: 1.1, boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm text-gray-900">{task.content}</p>
-          <div className="mt-2 flex items-center space-x-2">
-            <span className={text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}}>
-              {task.priority}
-            </span>
-          </div>
-        </div>
-        <button className="p-1 hover:bg-gray-100 rounded-full">
-          <MoreHorizontal className="h-4 w-4 text-gray-500" />
-        </button>
-      </div>
-    </div>
+      <span>{task.content}</span>
+      <button
+        onClick={() => onDeleteTask(task.id)}
+        className="ml-4 p-2 bg-red-500 text-white rounded"
+      >
+        Supprimer
+      </button>
+    </motion.div>
   );
-}
+};
 
 export default Task;

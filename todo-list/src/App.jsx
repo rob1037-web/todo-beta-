@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
+import Board from './components/Board/Board';
+import AddTaskForm from './components/AddTaskForm';
 
 const initialTasks = {
   'task-1': { id: 'task-1', content: 'Préparer la présentation', priority: 'high' },
@@ -86,6 +88,37 @@ function App() {
     });
   };
 
+  const addTask = (title) => {
+    const newTaskId = task-${Date.now()};
+    const newTask = { id: newTaskId, content: title, priority: 'low' };
+    const newTasks = { ...tasks, [newTaskId]: newTask };
+
+    const newColumn = {
+      ...columns['column-1'],
+      taskIds: [...columns['column-1'].taskIds, newTaskId],
+    };
+
+    setTasks(newTasks);
+    setColumns({
+      ...columns,
+      'column-1': newColumn,
+    });
+  };
+
+  const deleteTask = (taskId) => {
+    const newTasks = { ...tasks };
+    delete newTasks[taskId];
+
+    const newColumns = { ...columns };
+    for (const columnId in newColumns) {
+      const column = newColumns[columnId];
+      column.taskIds = column.taskIds.filter(id => id !== taskId);
+    }
+
+    setTasks(newTasks);
+    setColumns(newColumns);
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="min-h-screen bg-gray-100">
@@ -98,43 +131,8 @@ function App() {
         </header>
 
         <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="flex gap-4 overflow-x-auto pb-4">
-            {columnOrder.map((columnId) => {
-              const column = columns[columnId];
-              const columnTasks = column.taskIds.map(taskId => tasks[taskId]);
-              
-              return (
-                <Droppable droppableId={column.id} key={column.id}>
-                  {(provided) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      className="flex-shrink-0 w-72 bg-gray-200 rounded-lg p-4"
-                    >
-                      <h2 className="font-bold mb-4">{column.title}</h2>
-                      <div className="space-y-2">
-                        {columnTasks.map((task, index) => (
-                          <Draggable key={task.id} draggableId={task.id} index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="bg-white p-4 rounded shadow"
-                              >
-                                {task.content}
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    </div>
-                  )}
-                </Droppable>
-              );
-            })}
-          </div>
+          <AddTaskForm onAddTask={addTask} />
+          <Board columns={columns} tasks={tasks} onDropTask={onDragEnd} onDeleteTask={deleteTask} />
         </main>
       </div>
     </DragDropContext>

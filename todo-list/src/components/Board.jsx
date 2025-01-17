@@ -3,7 +3,7 @@ import Column from './Column';
 
 const Board = ({ columns, tasks, onDropTask }) => {
   return (
-    <div className="flex space-x-4">
+    <div className="flex flex-wrap space-x-4">
       {columns.map((column) => (
         <Column
           key={column.id}
